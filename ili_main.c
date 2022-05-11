@@ -28,7 +28,7 @@ extern unsigned long my_get_gate_offset(gate_desc *gate);
 // Utility functions
 //
 void print(char *str) {
-	printk(KERN_INFO "ILI: %s\n", str);
+	trace_printk(KERN_INFO "ILI: %s\n", str);
 }
  
 unsigned int what_to_do(unsigned char magic) {

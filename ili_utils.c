@@ -6,8 +6,8 @@ void my_store_idt(struct desc_ptr *idtr) {
 // </STUDENT FILL>
 
     asm volatile ("SIDT %0;"
+    :"=m"(*idtr) // maybe the "m" is a bug
     :
-    :"m"(idtr) // maybe the "m" is a bug
     :"memory"
     );
 
@@ -20,7 +20,7 @@ void my_load_idt(struct desc_ptr *idtr) {
 // <STUDENT FILL>
     asm volatile ("LIDT %0;"
     :
-    :"m"(idtr) // maybe the "m" is a bug
+    :"m"(*idtr) // maybe the "m" is a bug
     :"memory"
     );
 
