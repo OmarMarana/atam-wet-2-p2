@@ -52,7 +52,7 @@ my_ili_handler:
     movb %r9b, %dil 
     movq $0x2, %rdx
     movq $0x1, %rcx
-    cmpb %r9b, $0x0F
+    cmp $0x0f ,%r9b
     cmove %rdx, %rcx # if the LSB is 0x0f then the len of the op is 2
     cmove %r12, %rdi # if the LSB is 0x0f then take the MSB of the op
 
@@ -109,7 +109,7 @@ my_ili_handler:
     popq %r9
     popq %r8
 
-    jmp* old_ili_handler
+    jmp *old_ili_handler
 
 
 
