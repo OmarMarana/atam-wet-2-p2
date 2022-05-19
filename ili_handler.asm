@@ -47,19 +47,10 @@ my_ili_handler:
     pushq %r8
     pushq %rcx
 
-
-    # there is a bug here. i may not change scratch regs but "what to do" can. i should save them in the very start of hanlder - acutally they are all saved
-    # the byte is in rdi
+   
     call what_to_do
 
-    # popq %rcx
-    # popq %r8
-    # mov 72(%rsp), %r8
-    # mov 49(%rsp), %rcx
-
-
-
-    # cmpq $0x0, %rax
+    
     cmpl $0x0, %eax
     je JUMP_TO_OLD_HANDLER
     movq %rax, %rdi # put rax in rdi incase what_to_do() ret val isnt zero
@@ -75,9 +66,8 @@ my_ili_handler:
     popq %rdx 
     popq %rcx
     popq %r9
-    # popq %r8
-
-    # sub %rcx, %r8 # user_rip += ill_op.len()
+    
+    
     movq -80(%rsp), %r8 
     addq -88(%rsp), %r8 # user_rip += ill_op.len()  
     add $16, %rsp
@@ -102,19 +92,7 @@ my_ili_handler:
 
     jmp *old_ili_handler
 
-
-
     # ##########################################
     # DONT FORGET TO RESTORE USED REGS EXCEPT FOR RDI
     # ##########################################
 
-
-# ; .section .data
-#
-#; usr_rip : .short 0x040f
-# ; nxt_inst : .quad 0x050f0000003cc0c748
-#
-#
-#
-#; 48 c7 c0 3c 00 00 00 0f 05
-    
