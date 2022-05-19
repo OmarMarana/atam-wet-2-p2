@@ -13,7 +13,9 @@ my_ili_handler:
 
 
     movq 16(%rsp), %r8  # r8 = user_rip
-    movw (%r8), %r9w  # r9w = the two bytes pointed to by user_rip eg 0x040f
+    # movw (%r8), %r9w  # r9w = the two bytes pointed to by user_rip eg 0x040f
+    movb (%r8), %r9b # now we have the LSB of the op in r9b
+
 
     # now we have the opcode in r9w and we need to get the MSB
 
@@ -27,16 +29,14 @@ my_ili_handler:
     xorq %rdx, %rdx
     xorq %r12, %r12
 
-
-    movq %r9, %r12
-    shrq $0x8 , %r12
     movb %r9b, %dil 
     movq $0x2, %rdx
     movq $0x1, %rcx
     cmpb $0x0f ,%r9b
-    cmove %rdx, %rcx # if the LSB is 0x0f then the len of the op is 2
-    cmove %r12, %rdi # if the LSB is 0x0f then take the MSB of the op
+    cmove %rdx, %rcx
+    cmove 1(%r8), %rdi
 
+    
     # now we have the byte that should be passed to what_to_do() in %rdi. we also have then len of the op in rcx
 
     pushq %rsi
